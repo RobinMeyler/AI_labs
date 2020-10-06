@@ -16,6 +16,7 @@ public:
 	/// main method for game
 	/// </summary>
 	void run();
+	static sf::Vector2f m_screenDimensions;
 
 private:
 	Player p;

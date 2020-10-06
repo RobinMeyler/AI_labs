@@ -1,4 +1,5 @@
 #include "NPC.h"
+#include "Game.h"
 
 
 void NPC::load()
@@ -9,21 +10,37 @@ void NPC::load()
 	m_npcSprite.setScale(2, 2);
 }
 
-void NPC::update()
+void NPC::update(sf::Time t_deltaTime)
 {
-	m_npcSprite.move(m_direction, 0);
+	m_npcSprite.move(0, m_direction);
 
-	if (m_npcSprite.getPosition().x > 1600)
-	{
-		m_npcSprite.setPosition(-128, m_npcSprite.getPosition().y);
-	}
-	else if (m_npcSprite.getPosition().x < -128)
-	{
-		m_npcSprite.setPosition(1600, m_npcSprite.getPosition().y);
-	}
+	checkScreenWrap();
 }
 
 void NPC::draw(sf::RenderWindow* t_win)
 {
 	t_win->draw(m_npcSprite);
+}
+
+void NPC::checkScreenWrap()
+{
+	// Top / Bottom
+	if (m_npcSprite.getPosition().y > Game::m_screenDimensions.y)
+	{
+		m_npcSprite.setPosition(m_npcSprite.getPosition().x, -m_npcSprite.getGlobalBounds().width);
+	}
+	else if (m_npcSprite.getPosition().y < -m_npcSprite.getGlobalBounds().height)
+	{
+		m_npcSprite.setPosition(m_npcSprite.getPosition().x, Game::m_screenDimensions.y);
+	}
+
+	// Right / Left
+	if (m_npcSprite.getPosition().x > Game::m_screenDimensions.x)
+	{
+		m_npcSprite.setPosition(-m_npcSprite.getGlobalBounds().width, m_npcSprite.getPosition().y);
+	}
+	else if (m_npcSprite.getPosition().x < -m_npcSprite.getGlobalBounds().width)
+	{
+		m_npcSprite.setPosition(Game::m_screenDimensions.x, m_npcSprite.getPosition().y);
+	}
 }

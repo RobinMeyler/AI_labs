@@ -1,5 +1,10 @@
 #include "Game.h"
 
+
+sf::Vector2f Game::m_screenDimensions{ 1600.f, 1600.f };
+
+
+
 Game::Game() :
 	m_window{ sf::VideoMode{ 1600, 1600, 32 }, "AI - 1" },
 	m_exitGame{ false }
@@ -78,10 +83,17 @@ void Game::update(sf::Time t_deltaTime)
 	{
 		p.decreaseSpeed();
 	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	{
+		p.changeDirection(1);
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	{
+		p.changeDirection(-1);
+	}
 
-
-	p.update();
-	n.update();
+	p.update(t_deltaTime);
+	n.update(t_deltaTime);
 }
 
 void Game::render()
